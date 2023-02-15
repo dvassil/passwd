@@ -46,7 +46,8 @@ ZEND_BEGIN_ARG_INFO(arginfo_frombase62, 0)
 	ZEND_ARG_INFO(0, str)
 ZEND_END_ARG_INFO()
 
-static zend_function_entry passwd_functions[] = {
+static zend_function_entry passwd_functions[] =
+{
 	PHP_FE(passwd_version, arginfo_passwd_version)
 	PHP_FE(passwd_create,  arginfo_passwd_create)
 	PHP_FE(tobase62,       arginfo_tobase62)
@@ -78,9 +79,9 @@ ZEND_GET_MODULE(passwd)
 #endif
 
 
-char* digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-char* passwordChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+[]{}\\|,<.>/?~;:";
-int passwordCharsLen = 0;
+char* digits           = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+char* passwordChars    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+[]{}\\|,<.>/?~;:";
+int   passwordCharsLen = 0;
 
 
 static void ZEND_MODULE_GLOBALS_CTOR_N(passwd)(void *passwd_globals)
@@ -111,7 +112,7 @@ PHP_FUNCTION(passwd_version)
 
 PHP_FUNCTION(passwd_create)
 {
-    long i, len, rnd_idx;
+    long  i, len, rnd_idx;
     char* tmp;
 
     if (ZEND_NUM_ARGS() != 1) {
@@ -137,7 +138,7 @@ PHP_FUNCTION(passwd_create)
     tmp = emalloc(len+1);
     for (i=0; i<len; i++)
     {
-	php_random_int_throw(0, passwordCharsLen-1, &rnd_idx);
+		php_random_int_throw(0, passwordCharsLen-1, &rnd_idx);
         tmp[i] = passwordChars[rnd_idx];
     }
     tmp[i]='\0';
@@ -148,11 +149,12 @@ PHP_FUNCTION(passwd_create)
 
 PHPAPI unsigned long _php_math_base62tolong(const char* s, int len)
 {
-	unsigned long num = 0;
+	unsigned
+	long   num  = 0;
 	double fnum = 0;
-	int i;
-	int mode = 0;
-	char c;
+	int    i;
+	int    mode = 0;
+	char   c;
 
 	for (i = len; i > 0; i--) {
 		c = *s++;
@@ -177,10 +179,11 @@ PHPAPI unsigned long _php_math_base62tolong(const char* s, int len)
 
 PHPAPI char * _php_math_longtobase62(unsigned long value)
 {
-	char buf[(sizeof(unsigned long) << 3) + 1];
-	char *ptr, *end;
+	char  buf[(sizeof(unsigned long) << 3) + 1];
+	char *ptr,
+		 *end;
 
-	end = ptr = buf + sizeof(buf) - 1;
+	end  = ptr = buf + sizeof(buf) - 1;
 	*ptr = '\0';
 
 	do
@@ -195,10 +198,12 @@ PHPAPI char * _php_math_longtobase62(unsigned long value)
 
 PHP_FUNCTION(tobase62)
 {
-	unsigned long number;
+	unsigned
+	long  number;
 	char *result;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &number) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &number) == FAILURE)
+	{
 		return;
 	}
 
@@ -209,8 +214,8 @@ PHP_FUNCTION(tobase62)
 
 PHP_FUNCTION(frombase62)
 {
-	long ret = 0;
-	int len = 0;
+	long  ret = 0;
+	int   len = 0;
 	char* str;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &str, &len) == FAILURE)
